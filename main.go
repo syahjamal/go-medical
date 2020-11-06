@@ -6,6 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/syahjamal/go-medical/config"
+	"github.com/syahjamal/go-medical/controller"
 	"github.com/syahjamal/go-medical/routes"
 )
 
@@ -15,6 +16,9 @@ func main() {
 	defer config.DB.Close()
 
 	router := mux.NewRouter()
+
+	router.HandleFunc("/register", controller.CreateUser).Methods("POST")
+	router.HandleFunc("/login", controller.Login).Methods("POST")
 
 	router.HandleFunc("/pasien/create", routes.CreatePasien).Methods("POST")
 

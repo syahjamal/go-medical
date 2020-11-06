@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/mux"
 	"github.com/syahjamal/go-medical/config"
 	"github.com/syahjamal/go-medical/models"
 	"golang.org/x/crypto/bcrypt"
@@ -100,4 +101,42 @@ func FindOne(email, password string) map[string]interface{} {
 	resp["token"] = tokenString //Store the token in the response
 	resp["user"] = user
 	return resp
+}
+
+//FetchUsers function
+func FetchUsers(w http.ResponseWriter, r *http.Request) {
+	var users []models.User
+	db.Preload("auths").Find(&users)
+
+	json.NewEncoder(w).Encode(users)
+}
+
+//UpdateUser function
+func UpdateUser(w http.ResponseWriter, r *http.Request) {
+	user := &models.User{}
+	params := mux.Vars(r)
+	var id = params["id"]
+	db.First(&user, id)
+	json.NewDecoder(r.Body).Decode(user)
+	db.Save(&user)
+	json.NewEncoder(w).Encode(&user)
+}
+
+//DeleteUser function
+func DeleteUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var id = params["id"]
+	var user models.User
+	db.First(&user, id)
+	db.Delete(&user)
+	json.NewEncoder(w).Encode("User deleted")
+}
+
+//GetUser function
+func GetUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	var id = params["id"]
+	var user models.User
+	db.First(&user, id)
+	json.NewEncoder(w).Encode(&user)
 }

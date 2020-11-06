@@ -7,7 +7,7 @@ import (
 //User struct
 type User struct {
 	Pasien    []Pasien
-	IDUser    uint   `gorm:"primary_key"`
+	IDUser    uint   `json:"id" gorm:"primary_key"`
 	Username  string `json:"username"`
 	Email     string `json:"email"`
 	Password  string `json:"password"`
