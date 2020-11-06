@@ -25,6 +25,11 @@ type Error interface {
 
 var db = config.DB
 
+//TestAPI function
+func TestAPI(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("API live and kicking"))
+}
+
 //CreateUser function
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	user := &models.User{}
